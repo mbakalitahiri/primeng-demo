@@ -1,0 +1,17 @@
+<p-menubar [model]="items">
+  <ng-template pTemplate="start">
+    <img
+      src="../../assets/images/logo.png"
+      height="40"
+      class="mr-2"
+      [routerLink]="['/']"
+      class="logo"
+    />
+  </ng-template>
+  <ng-template pTemplate="end">
+    <cart-summary></cart-summary>
+  </ng-template>
+</p-menubar>
+<router-outlet></router-outlet>
+<carousel-basic-demo></carousel-basic-demo>
+<app-footer></app-footer>

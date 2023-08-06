@@ -1,0 +1,6 @@
+<div *ngIf="cart.itemCount" class="summary">
+  <div [routerLink]="['/cart']">
+    <i class="pi pi-shopping-cart" style="font-size: 2rem"></i>
+    {{ cart.itemCount }}
+  </div>
+</div>

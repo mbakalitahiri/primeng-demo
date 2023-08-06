@@ -1,0 +1,217 @@
+<div *ngIf="orderSent" class="m-2 text-center">
+  <h2>Thanks!</h2>
+  <p>Thanks for placing your order.</p>
+  <p>We'll ship your goods as soon as possible.</p>
+  <button
+    pButton
+    type="button"
+    icon="pi pi-check"
+    class="p-button-lg p-button-raised p-button-rounded p-button-text p-button-success"
+    [routerLink]="['/']"
+  ></button>
+</div>
+
+<ng-template pTemplate="colgroup" let-columns>
+  <colgroup>
+    <col style="width: 4%; text-align: center" />
+    <col [ngStyle]="{ width: '50%' }" />
+  </colgroup>
+</ng-template>
+
+<div class="surface-ground px-4 py-8 md:px-4 lg:px-8">
+  <ng-template [ngIf]="order.cart.lines.length > 0" ]>
+    <div class="grid">
+      <div class="col-12 lg:col-4">
+        <div class="p-3 h-full">
+          <div
+            class="shadow-2 p-3 h-full flex flex-column surface-card"
+            style="border-radius: 6px"
+          >
+            <form
+              #form="ngForm"
+              novalidate
+              (ngSubmit)="submitOrder(form, order)"
+              class="m-2"
+            >
+              <div
+                class="surface-card p-4 shadow-2 border-round w-full lg:w-12"
+              >
+                <div class="text-center mb-5">
+                  <div class="text-900 text-3xl font-medium mb-3">
+                    Customer Details
+                  </div>
+                </div>
+
+                <div>
+                  <label for="email1" class="block text-900 font-medium mb-2"
+                    >Name</label
+                  >
+                  <input
+                    #name="ngModel"
+                    name="name"
+                    [(ngModel)]="order.name"
+                    required
+                    placeholder="Name"
+                    pInputText
+                    class="w-full mb-3"
+                  />
+
+                  <label for="password1" class="block text-900 font-medium mb-2"
+                    >Address</label
+                  >
+                  <input
+                    #address="ngModel"
+                    name="address"
+                    [(ngModel)]="order.address"
+                    required
+                    pInputText
+                    type="text"
+                    class="w-full mb-3"
+                  />
+
+                  <label for="password1" class="block text-900 font-medium mb-2"
+                    >City</label
+                  >
+                  <input
+                    #city="ngModel"
+                    name="city"
+                    [(ngModel)]="order.city"
+                    required
+                    pInputText
+                    type="text"
+                    class="w-full mb-3"
+                  />
+
+                  <label for="password1" class="block text-900 font-medium mb-2"
+                    >State</label
+                  >
+                  <input
+                    #state="ngModel"
+                    name="city"
+                    [(ngModel)]="order.state"
+                    required
+                    pInputText
+                    type="text"
+                    class="w-full mb-3"
+                  />
+
+                  <label for="zip" class="block text-900 font-medium mb-2"
+                    >zip</label
+                  >
+                  <input
+                    #state="ngModel"
+                    name="zip"
+                    [(ngModel)]="order.zip"
+                    required
+                    pInputText
+                    type="text"
+                    class="w-full mb-3"
+                  />
+
+                  <label for="country" class="block text-900 font-medium mb-2"
+                    >country</label
+                  >
+                  <input
+                    #state="ngModel"
+                    name="country"
+                    [(ngModel)]="order.country"
+                    required
+                    pInputText
+                    type="text"
+                    class="w-full mb-3"
+                  />
+
+                  <div
+                    class="flex align-items-center justify-content-between mb-6"
+                  >
+                    <div class="flex align-items-center"></div>
+                  </div>
+
+                  <button
+                    pButton
+                    pRipple
+                    label="Submit"
+                    icon="pi pi-user"
+                    class="w-full"
+                    type="submit"
+                    [disabled]="!form.valid"
+                  ></button>
+                </div>
+              </div>
+            </form>
+            <hr
+              class="mb-3 mx-0 border-top-1 border-none surface-border mt-auto"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 lg:col-8">
+        <div class="p-3 h-full">
+          <div
+            class="shadow-2 p-3 h-full flex flex-column surface-card"
+            style="border-radius: 6px"
+          >
+            <div>
+              <p-table
+                [value]="order.cart.lines"
+                [tableStyle]="{ 'min-width': '50rem' }"
+              >
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th>Qty</th>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Subtotal</th>
+                    <th>Action</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-line>
+                  <tr>
+                    <td>
+                      <input
+                        type="number"
+                        class="form-control-sm"
+                        style="width: 5em"
+                        [value]="line.quantity"
+                        pInputText
+                        (change)="
+                          order.cart.updateQuantity(line.product, $event)
+                        "
+                      />
+                    </td>
+                    <td>{{ line.product.name }}</td>
+                    <td>{{ line.product.price }}</td>
+                    <td>
+                      {{
+                        line.lineTotal | currency : "GBP" : "symbol" : "2.2-2"
+                      }}
+                    </td>
+                    <td>
+                      <p-button
+                        label="Remove"
+                        styleClass="p-button-danger"
+                        (click)="order.cart.removeLine(line)"
+                      ></p-button>
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
+              <p-divider></p-divider>
+
+              <p>Total: {{ order.cart.cartPrice | currency : "GBP" }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</div>
+
+<ng-template [ngIf]="!order.cart.lines.length && !orderSent">
+  <div class="surface-section px-4 py-8 md:px-6 lg:px-8 text-center">
+    <div class="mb-3 font-bold text-3xl">
+      <span class="text-900">Cart is Empnty </span>
+    </div>
+  </div>
+</ng-template>
